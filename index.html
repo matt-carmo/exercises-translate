@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color: #f1f1f1;
+    }
+
+    ul {
+        list-style-type: none;
+
+    }
+    .active {
+        border: 1px solid black;
+    }
+
+    li {
+        display: flex;
+        margin-bottom: 1rem;
+
+
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+        margin-right: 15px;
+    }
+</style>
+
+<body>
+    <ul>
+        <li>
+
+        </li>
+    </ul>
+</body>
+
+<script src="./i18n/i18n.js"></script>
+
+
+<script>
+    async function loadJSON() {
+        try {
+            // Carrega o arquivo JSON
+            const response = await fetch('./i18n/locales/pt/pt-br.json');
+            if (!response.ok) {
+                throw new Error('Erro ao carregar o JSON');
+            }
+            const data = await response.json();
+            console.log(data)
+            i18n.translator.add(data);
+
+            const current = 20
+            //  Then translate something
+
+            fetch('https://matt-carmo.com.br/exercises').then(response => response.json())
+                .then(data => document.querySelector('ul')
+                    .innerHTML = data.map((item, index) => `<li class="${index === current ? 'active' : ''}"></div><img src="https://matt-carmo.com.br/public/${item.image}.gif"/><div><h2>${i18n(item.name)}</h2><h2>${item.name}</h2><span>${index}</span></li>`).join(''));
+            // Manipula os dados JSON
+
+        } catch (error) {
+            console.error('Erro:', error);
+        }
+    }
+
+    loadJSON();
+</script>
+
+</html>
